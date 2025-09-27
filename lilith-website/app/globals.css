@@ -1,0 +1,129 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Updated color tokens to match Lilith brand palette */
+  --background: #f7f1e7; /* Cream for the main background */
+  --foreground: #8b1e3f; /* Blood Red for primary text */
+  --card: #ffffff; /* White for card backgrounds */
+  --card-foreground: #374151; /* Dark gray for card text */
+  --popover: #ffffff; /* White for popover backgrounds */
+  --popover-foreground: #8b1e3f; /* Blood Red for popover text */
+  --primary: #8b1e3f; /* Blood Red for call-to-action buttons */
+  --primary-foreground: #ffffff; /* White text on primary buttons */
+  --secondary: #d4af37; /* Warm Gold for secondary buttons */
+  --secondary-foreground: #ffffff; /* White text on secondary buttons */
+  --muted: #b26e63; /* Terracotta accent for subtle surfaces */
+  --muted-foreground: #374151; /* Dark gray for secondary text (better contrast) */
+  --accent: #d4af37; /* Warm Gold for accents */
+  --accent-foreground: #8b1e3f; /* Blood Red for accent text */
+  --destructive: #dc2626; /* Red for destructive actions */
+  --destructive-foreground: #ffffff; /* White text on destructive buttons */
+  --border: #e2e8f0; /* Light gray for borders */
+  --input: #ffffff; /* White for input fields */
+  --ring: #d4af37; /* Warm Gold for focus rings */
+  --chart-1: #8b1e3f; /* For charts */
+  --chart-2: #d4af37; /* For charts */
+  --chart-3: #b26e63; /* For charts */
+  --chart-4: #f7f1e7; /* For charts */
+  --chart-5: #ffffff; /* For charts */
+  --radius: 0.5rem; /* Rounded corners for a softer feel */
+  --sidebar: #f7f1e7; /* Cream for sidebar background */
+  --sidebar-foreground: #8b1e3f; /* Blood Red for sidebar text */
+  --sidebar-primary: #d4af37; /* Warm Gold for sidebar highlights */
+  --sidebar-primary-foreground: #ffffff; /* White for sidebar primary text */
+  --sidebar-accent: #b26e63; /* Terracotta for sidebar accents */
+  --sidebar-accent-foreground: #ffffff; /* White for sidebar accent text */
+  --sidebar-border: #e2e8f0; /* Light gray for sidebar borders */
+  --sidebar-ring: #d4af37; /* Warm Gold for sidebar focus rings */
+}
+
+.dark {
+  /* Updated dark mode colors to maintain brand consistency */
+  --background: #2d1b1e; /* Dark version of blood red */
+  --foreground: #f7f1e7; /* Cream for dark mode text */
+  --card: #3d2b2e; /* Darker card background */
+  --card-foreground: #f7f1e7; /* Cream for card text */
+  --popover: #3d2b2e; /* Dark popover background */
+  --popover-foreground: #f7f1e7; /* Cream for popover text */
+  --primary: #d4af37; /* Warm Gold for primary in dark mode */
+  --primary-foreground: #2d1b1e; /* Dark text on gold buttons */
+  --secondary: #b26e63; /* Terracotta for secondary */
+  --secondary-foreground: #f7f1e7; /* Cream text on terracotta */
+  --muted: #5d4a4d; /* Muted terracotta */
+  --muted-foreground: #f7f1e7; /* Cream for muted text */
+  --accent: #d4af37; /* Warm Gold for accents */
+  --accent-foreground: #2d1b1e; /* Dark text on gold */
+  --destructive: #dc2626; /* Red for destructive actions */
+  --destructive-foreground: #f7f1e7; /* Cream text on red */
+  --border: #5d4a4d; /* Muted border */
+  --input: #3d2b2e; /* Dark input background */
+  --ring: #d4af37; /* Warm Gold for focus rings */
+  --chart-1: #d4af37; /* For charts */
+  --chart-2: #b26e63; /* For charts */
+  --chart-3: #8b1e3f; /* For charts */
+  --chart-4: #f7f1e7; /* For charts */
+  --chart-5: #ffffff; /* For charts */
+  --sidebar: #2d1b1e; /* Dark sidebar background */
+  --sidebar-foreground: #f7f1e7; /* Cream sidebar text */
+  --sidebar-primary: #d4af37; /* Gold sidebar highlights */
+  --sidebar-primary-foreground: #2d1b1e; /* Dark text on gold */
+  --sidebar-accent: #b26e63; /* Terracotta sidebar accents */
+  --sidebar-accent-foreground: #f7f1e7; /* Cream accent text */
+  --sidebar-border: #5d4a4d; /* Muted sidebar borders */
+  --sidebar-ring: #d4af37; /* Gold sidebar focus rings */
+}
+
+@theme inline {
+  /* Updated font variables to use new fonts */
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-space-grotesk);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
