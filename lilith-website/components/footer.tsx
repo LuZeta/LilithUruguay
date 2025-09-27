@@ -1,16 +1,17 @@
 import Link from "next/link"
 import Image from "next/image"
+import { publicPath } from "@/lib/publicPath"
 
 export function Footer() {
   return (
     <footer className="bg-card border-t border-accent/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Logo and Description */}
-          <div className="md:col-span-2">
-            <Link href="/" className="flex items-center space-x-2 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+          {/* Logo */}
+          <div>
+            <Link href="/" className="flex items-center space-x-2">
               <Image
-                src="/images/logo.png"
+                src={publicPath("/images/logo.png")}
                 alt="Lilith"
                 width={256}
                 height={80}
@@ -18,6 +19,10 @@ export function Footer() {
                 priority
               />
             </Link>
+          </div>
+
+          {/* Frase */}
+          <div>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
               Bombachas saludables, reutilizables y absorbentes creadas para acompañar las necesidades más íntimas de
               las mujeres con respeto y amor.

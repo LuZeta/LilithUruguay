@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { publicPath } from "@/lib/publicPath"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function About() {
@@ -19,7 +20,7 @@ export function About() {
                 <div className="order-1">
                   <div className="aspect-square relative overflow-hidden rounded-full max-w-xs md:max-w-sm mx-auto ring-2 ring-accent/30 shadow-md">
                     <Image
-                      src="/images/bombacha.jpg"
+                      src={publicPath("/images/bombacha.jpg")}
                       alt="Bombacha Lilith"
                       fill
                       className="object-cover"
@@ -70,7 +71,7 @@ export function About() {
                   <div className="relative w-full">
                     <div className="aspect-square relative overflow-hidden rounded-full max-w-xs mx-auto ring-2 ring-accent/30 shadow-md">
                       <Image
-                        src="/images/rossinaPerfil.jpg"
+                        src={publicPath("/images/rossinaPerfil.jpg")}
                         alt="Foto de Rossina"
                         fill
                         className="object-cover"

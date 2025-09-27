@@ -19,6 +19,9 @@ const nextConfig = {
   // Servir bajo el subpath del repo en producción
   basePath: isProd ? `/${repo}` : undefined,
   assetPrefix: isProd ? `/${repo}/` : undefined,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repo}` : '',
+  },
 }
 
 export default nextConfig

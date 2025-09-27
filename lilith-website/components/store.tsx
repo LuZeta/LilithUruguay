@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react"
 import Image from "next/image"
+import { publicPath } from "@/lib/publicPath"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -81,7 +82,7 @@ export function Store() {
             <CardContent>
               <div className="relative">
                 <Image
-                  src="/images/GuiaTalles.png"
+                  src={publicPath("/images/GuiaTalles.png")}
                   alt="Guía de talles Lilith"
                   width={1200}
                   height={800}
@@ -103,9 +104,9 @@ function CardTiroBajo() {
   const [talle, setTalle] = useState<Talle | "">("")
 
   const image = useMemo(() => {
-    if (color === "blanco") return "/images/tienda/TIROBAJOBLANCA.png"
-    if (color === "negro") return "/images/tienda/TIROBAJONEGRA.png"
-    return "/images/tienda/TIROBAJOBLANCA.png"
+    if (color === "blanco") return publicPath("/images/tienda/TIROBAJOBLANCA.png")
+    if (color === "negro") return publicPath("/images/tienda/TIROBAJONEGRA.png")
+    return publicPath("/images/tienda/TIROBAJOBLANCA.png")
   }, [color])
 
   const canBuy = Boolean(color && talle)
@@ -174,9 +175,9 @@ function CardTiroAlto() {
   const [talle, setTalle] = useState<Talle | "">("")
 
   const image = useMemo(() => {
-    if (color === "blanco") return "/images/tienda/TIROALTOBLANCA.png"
-    if (color === "negro") return "/images/tienda/TIROALTONEGRA.png"
-    return "/images/tienda/TIROALTOBLANCA.png"
+    if (color === "blanco") return publicPath("/images/tienda/TIROALTOBLANCA.png")
+    if (color === "negro") return publicPath("/images/tienda/TIROALTONEGRA.png")
+    return publicPath("/images/tienda/TIROALTOBLANCA.png")
   }, [color])
 
   const canBuy = Boolean(color && talle)
@@ -246,9 +247,9 @@ function CardPack() {
   const [talle, setTalle] = useState<Talle | "">("")
 
   const image = useMemo(() => {
-    if (tiro === "bajo") return "/images/tienda/PACKTIROBAJO.png"
+    if (tiro === "bajo") return publicPath("/images/tienda/PACKTIROBAJO.png")
     // default alto
-    return "/images/tienda/PACKTIROALTO.png"
+    return publicPath("/images/tienda/PACKTIROALTO.png")
   }, [tiro])
 
   const canBuy = Boolean(tiro && color && talle)

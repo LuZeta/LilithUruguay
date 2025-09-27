@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { publicPath } from "@/lib/publicPath"
 import { useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
@@ -13,27 +14,27 @@ type Slide = {
 
 const slides: Slide[] = [
   {
-    src: "/images/bombacha.jpg",
+    src: publicPath("/images/bombacha.jpg"),
     alt: "Cuidado íntimo, natural y consciente",
     text: "Cuidado íntimo, natural y consciente",
   },
   {
-    src: "/images/bombachayabsor.jpg",
+    src: publicPath("/images/bombachayabsor.jpg"),
     alt: "Algodón y bambú: suavidad que respira",
     text: "Algodón y bambú: suavidad que respira",
   },
   {
-    src: "/images/detalletela.jpg",
+    src: publicPath("/images/detalletela.jpg"),
     alt: "Hechas a mano, pensadas para vos",
     text: "Hechas a mano, pensadas para vos",
   },
   {
-    src: "/images/tela.jpg",
+    src: publicPath("/images/tela.jpg"),
     alt: "Bienestar que empieza en tu piel",
     text: "Bienestar que empieza en tu piel",
   },
   {
-    src: "/images/manotela.jpg",
+    src: publicPath("/images/manotela.jpg"),
     alt: "Lilith: confort que abraza tu esencia",
     text: "Lilith: confort que abraza tu esencia",
   },
@@ -73,7 +74,7 @@ export function Hero() {
             {/* Content centered, shifted slightly below midline: logo → frase → puntos */}
             <div className="absolute inset-0 z-20 flex flex-col items-center justify-end text-center px-4 pb-8 sm:pb-10 md:pb-12 lg:pb-14">
               <Link href="/" className="mb-3 sm:mb-4">
-                <Image src="/images/logobackground.png" alt="Lilith" width={240} height={72} className="h-auto w-44 sm:w-60 md:w-72" />
+                <Image src={publicPath("/images/logobackground.png")} alt="Lilith" width={240} height={72} className="h-auto w-44 sm:w-60 md:w-72" />
               </Link>
               <h2 className="text-white drop-shadow-md text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold max-w-4xl text-balance">
                 {slide.text}
