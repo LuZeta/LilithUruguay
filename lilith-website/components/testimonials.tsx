@@ -76,7 +76,7 @@ const faqs = [
   },
   {
     q: "¿Dónde se fabrican?",
-    a: <p>En Uruguay.</p>,
+    a: <p>Hechas con amor en Uruguay.</p>,
   },
   {
     q: "¿De qué están hechas?",

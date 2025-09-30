@@ -5,7 +5,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { Marcellus, Poppins } from "next/font/google"
 
 import { publicPath } from "@/lib/publicPath"
 
@@ -21,9 +20,6 @@ type LilithHeroProps = {
   slides: HighlightSlide[]
   logoSrc: string
 }
-
-const marcellus = Marcellus({ subsets: ["latin"], weight: "400" })
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500"] })
 
 const clipPathLeft = "path('M 0% 0% H 88% C 96% 20% 92% 36% 86% 48% C 80% 60% 94% 80% 86% 100% H 0% 100% Z')"
 const clipPathRight = "path('M 100% 0% H 12% C 4% 20% 8% 36% 14% 48% C 20% 60% 6% 80% 14% 100% H 100% 100% Z')"
@@ -188,9 +184,7 @@ function LilithSplitHero({ slides, logoSrc }: LilithHeroProps) {
                   }`}
                   style={panelClipStyle}
                 >
-                  <div
-                    className={`${poppins.className} mx-auto flex w-full max-w-xl flex-col gap-7 px-8 py-12 text-[#111] sm:px-12 lg:px-16`}
-                  >
+                  <div className="font-body mx-auto flex w-full max-w-xl flex-col gap-7 px-8 py-12 text-[#111] sm:px-12 lg:px-16">
                     <Link
                       href="/"
                       className="inline-flex w-max items-center gap-3 rounded-full bg-white px-5 py-2.5 shadow-sm ring-1 ring-[#111]/10"
@@ -198,9 +192,7 @@ function LilithSplitHero({ slides, logoSrc }: LilithHeroProps) {
                       <Image src={logoSrc} alt="Lilith" width={150} height={46} className="h-auto w-36" />
                     </Link>
                     <div className="space-y-4">
-                      <h2
-                        className={`${marcellus.className} text-xl font-semibold leading-tight tracking-tight text-[#111] sm:text-2xl lg:text-[1.75rem]`}
-                      >
+                      <h2 className="font-heading text-xl font-semibold leading-tight tracking-tight text-[#111] sm:text-2xl lg:text-[1.75rem]">
                         {activeSlide.title}
                       </h2>
                       <p className="text-base leading-relaxed text-[#111]/70 sm:text-lg">

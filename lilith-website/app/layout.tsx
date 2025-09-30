@@ -1,24 +1,24 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Space_Grotesk, DM_Sans } from "next/font/google"
+import { Marcellus, Poppins } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
 import { CartProvider } from "@/components/cart-context"
 import { Toaster } from "@/components/ui/toaster"
 
-const spaceGrotesk = Space_Grotesk({
+const marcellus = Marcellus({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-space-grotesk",
-  weight: ["400", "600", "700"],
+  variable: "--font-marcellus",
+  weight: "400",
 })
 
-const dmSans = DM_Sans({
+const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-dm-sans",
-  weight: ["400", "500"],
+  variable: "--font-poppins",
+  weight: ["400", "500", "600"],
 })
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`font-sans ${spaceGrotesk.variable} ${dmSans.variable} antialiased scroll-smooth`}>
+      <body className={`font-sans ${poppins.variable} ${marcellus.variable} antialiased scroll-smooth`}>
         <CartProvider>
           <Suspense fallback={null}>{children}</Suspense>
           <Toaster />
