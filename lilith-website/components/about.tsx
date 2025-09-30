@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function About() {
   return (
-    <section id="nosotros" className="py-20 bg-card">
+    <section id="nosotras" className="py-20 bg-card">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-center text-foreground mb-12">Nosotros</h2>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-center text-foreground mb-12">Nosotras</h2>
 
           {/* ¿Qué es Lilith? */}
           <Card className="border-accent/20 shadow-lg mb-10">
@@ -31,14 +31,13 @@ export function About() {
                 {/* Texto a la derecha */}
                 <div className="order-2">
                   <p className="text-lg leading-relaxed text-card-foreground mb-4">
-                    <strong className="text-primary">Lilith</strong> es una bombacha saludable, reutilizable y
-                    absorbente, pensada para acompañar las necesidades más íntimas de las mujeres a lo largo de su ciclo
-                    de vida. Cada prenda combina confort, salud y sustentabilidad con un diseño cuidado.
+                    <strong className="text-primary">Lilith</strong> es la primera bombacha ecológica y reutilizable de
+                    Uruguay pensada y diseñada para absorber orina. Lilith te cuida todos los días con confort y
+                    frescura.
                   </p>
                   <p className="text-lg leading-relaxed text-card-foreground">
-                    No es solo una prenda: es una elección consciente, un gesto de amor propio y también de
-                    responsabilidad.
-                    <span className="ml-1 font-semibold text-accent">Una estrategia en salud.</span>
+                    Es más que una bombacha, es una elección consciente, un gesto de amor propio y también de
+                    responsabilidad. Con Lilith tomas el control de tu salud íntima.
                   </p>
                 </div>
               </div>
@@ -48,22 +47,28 @@ export function About() {
           {/* Sobre Rossina */}
           <Card className="border-accent/20 shadow-lg">
             <CardHeader className="pb-0">
-              <CardTitle className="text-2xl md:text-3xl text-foreground">Sobre Rossina</CardTitle>
+              <CardTitle className="text-2xl md:text-3xl text-foreground">Sobre su fundadora</CardTitle>
             </CardHeader>
             <CardContent className="p-6 md:p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
                 <div className="order-2 md:order-1">
                   <div className="prose prose-lg max-w-none">
                     <p className="text-lg leading-relaxed text-card-foreground mb-6">
-                      Soy <strong className="text-primary">Rossina</strong>, mujer, madre y Partera. Desde mi trayectoria y
-                      especialidad en la salud femenina he aprendido a escuchar cuerpos, historias y ciclos. En mi camino
-                      fui comprendiendo la importancia de conectar con nuestra naturaleza para devolvernos la dignidad y
-                      libertad de ser nosotras mismas.
+                      Bienvenida a Lilith, mi nombre es <strong className="text-primary">Rossina</strong>. Soy Partera
+                      profesional. Mi propósito personal y como partera es cuidar la salud de las mujeres con dignidad,
+                      conciencia y autonomía. Lilith es una extensión de ese propósito, transformando una necesidad
+                      invisibilizada en una alternativa sostenible, saludable y accesible para miles de mujeres.
+                    </p>
+
+                    <p className="text-lg leading-relaxed text-card-foreground mb-6">
+                      En los próximos años sueño con que Lilith se convierta en una referencia en innovación íntima
+                      femenina para las mujeres de América Latina. Logrando que millones de mujeres dejen atrás los
+                      productos descartables y reduciendo juntas toneladas de residuos plásticos que contaminan nuestro
+                      hermoso planeta.
                     </p>
 
                     <p className="text-lg leading-relaxed text-card-foreground mb-0">
-                      Desde un conocimiento profundo y una fuerte convicción nació Lilith: creada con respeto y amor para
-                      acompañarte día a día.
+                      Gracias por estar aquí y sumarte a este gran propósito. Lilith, todos los días contigo.
                     </p>
                   </div>
                 </div>

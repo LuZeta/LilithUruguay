@@ -118,7 +118,7 @@ export function Contact() {
                       href="https://wa.me/59899256208"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-card-foreground hover:underline"
+                      className="text-card-foreground hover:underline whitespace-nowrap"
                     >
                       +598 99 256 208
                     </a>

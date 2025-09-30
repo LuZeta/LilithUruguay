@@ -5,7 +5,6 @@ import Image from "next/image"
 import { publicPath } from "@/lib/publicPath"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "@/hooks/use-toast"
 
@@ -24,11 +23,17 @@ type Talle =
 const TALLES: Talle[] = ["38", "40", "42", "44", "46", "48", "50", "52", "54", "56"]
 
 type BuyPayload = {
-  productId: "tiro-bajo" | "tiro-alto" | "pack-x2"
-  color?: "blanco" | "negro" | "combinado"
+  productId: "clasica" | "tiro-alto" | "pack-x2"
+  color?: "natural" | "negro"
   tiro?: "alto" | "bajo"
   talle: Talle
 }
+
+const PRICE_UNIT = 2140
+const PRICE_PACK = 4280
+const PHONE_NUMBER = "+598 99 256 208"
+const PHONE_NUMBER_NBSP = "+598\u00a099\u00a0256\u00a0208"
+const MATERIAL_NOTE = "Algodón orgánico, cáñamo y bambú. Hasta 300 lavados."
 
 // TODO: Integrar redirección a Mercado Pago según producto/variante
 function handleBuy(payload: BuyPayload) {
@@ -36,14 +41,10 @@ function handleBuy(payload: BuyPayload) {
   // Por ahora, mostramos confirmación y pasos de envío
   toast({
     title: "¡Gracias! Redirigiremos a Mercado Pago",
-    description:
-      "Finalizado el pago, coordiná el envío personalizado al +598 99 256 208.",
+    description: `Finalizado el pago, coordiná el envío personalizado al ${PHONE_NUMBER_NBSP}.`,
   })
   // console.log("handleBuy", payload)
 }
-
-const PRICE_UNIT = 2140
-const PRICE_PACK = 4280
 
 export function Store() {
   return (
@@ -51,14 +52,15 @@ export function Store() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">Nuestra Tienda</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Elegí tu modelo, color y talle. Si estás entre dos talles, te
-            recomendamos elegir el más grande.
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            ¡Felicitaciones! Estás a punto de decirle adiós a las compresas y protectores descartables. La primera
+            tienda de ropa íntima absorbente hecha a tu medida y por preventa. Compra hasta el 20 de cada mes y recibe
+            tu pedido a más tardar el 20 del mes siguiente.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
-          <CardTiroBajo />
+          <CardClasica />
           <CardTiroAlto />
           <CardPack />
         </div>
@@ -91,6 +93,9 @@ export function Store() {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
+              <p className="mt-4 text-sm text-muted-foreground text-center">
+                Si te encuentras entre dos tallas, elige la más grande.
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -99,12 +104,12 @@ export function Store() {
   )
 }
 
-function CardTiroBajo() {
-  const [color, setColor] = useState<"blanco" | "negro" | "">("")
+function CardClasica() {
+  const [color, setColor] = useState<"natural" | "negro" | "">("")
   const [talle, setTalle] = useState<Talle | "">("")
 
   const image = useMemo(() => {
-    if (color === "blanco") return publicPath("/images/tienda/TIROBAJOBLANCA.png")
+    if (color === "natural") return publicPath("/images/tienda/TIROBAJOBLANCA.png")
     if (color === "negro") return publicPath("/images/tienda/TIROBAJONEGRA.png")
     return publicPath("/images/tienda/TIROBAJOBLANCA.png")
   }, [color])
@@ -115,24 +120,24 @@ function CardTiroBajo() {
     <Card className="group hover:shadow-lg transition-shadow border-accent/20">
       <CardHeader className="p-0">
         <div className="aspect-square relative overflow-hidden rounded-t-lg bg-muted/20">
-          <Image src={image} alt="Lilith Tiro Bajo" fill className="object-cover" />
+          <Image src={image} alt="Lilith Clásica" fill className="object-cover" />
         </div>
       </CardHeader>
       <CardContent className="p-6">
-        <CardTitle className="text-xl mb-2 text-foreground">Lilith Tiro Bajo</CardTitle>
-        <div className="flex items-center justify-between mb-4">
+        <CardTitle className="text-xl mb-2 text-foreground">Lilith Clásica</CardTitle>
+        <div className="mb-4">
           <span className="text-2xl font-bold text-primary">${PRICE_UNIT.toLocaleString("es-UY")}</span>
-          <Badge variant="secondary">Disponible</Badge>
+          <p className="text-sm text-muted-foreground">{MATERIAL_NOTE}</p>
         </div>
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-foreground mb-1 block">Color</label>
-            <Select value={color} onValueChange={(v) => setColor(v as any)}>
+            <Select value={color} onValueChange={(v) => setColor(v as "natural" | "negro")}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar color" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="blanco">Blanco</SelectItem>
+                <SelectItem value="natural">Natural</SelectItem>
                 <SelectItem value="negro">Negro</SelectItem>
               </SelectContent>
             </Select>
@@ -152,7 +157,7 @@ function CardTiroBajo() {
               </SelectContent>
             </Select>
             <p className="mt-2 text-xs text-muted-foreground">
-              Si estás entre dos talles, elegí el más grande.
+              Moldería propia, real e inclusiva. Puedes elegir tu mejor talle con nuestra guía.
             </p>
           </div>
         </div>
@@ -161,7 +166,7 @@ function CardTiroBajo() {
         <Button
           className="w-full"
           disabled={!canBuy}
-          onClick={() => handleBuy({ productId: "tiro-bajo", color: color as "blanco" | "negro", talle: talle as Talle })}
+          onClick={() => handleBuy({ productId: "clasica", color: color as "natural" | "negro", talle: talle as Talle })}
         >
           Comprar
         </Button>
@@ -171,11 +176,11 @@ function CardTiroBajo() {
 }
 
 function CardTiroAlto() {
-  const [color, setColor] = useState<"blanco" | "negro" | "">("")
+  const [color, setColor] = useState<"natural" | "negro" | "">("")
   const [talle, setTalle] = useState<Talle | "">("")
 
   const image = useMemo(() => {
-    if (color === "blanco") return publicPath("/images/tienda/TIROALTOBLANCA.png")
+    if (color === "natural") return publicPath("/images/tienda/TIROALTOBLANCA.png")
     if (color === "negro") return publicPath("/images/tienda/TIROALTONEGRA.png")
     return publicPath("/images/tienda/TIROALTOBLANCA.png")
   }, [color])
@@ -191,19 +196,19 @@ function CardTiroAlto() {
       </CardHeader>
       <CardContent className="p-6">
         <CardTitle className="text-xl mb-2 text-foreground">Lilith Tiro Alto</CardTitle>
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4">
           <span className="text-2xl font-bold text-primary">${PRICE_UNIT.toLocaleString("es-UY")}</span>
-          <Badge variant="secondary">Disponible</Badge>
+          <p className="text-sm text-muted-foreground">{MATERIAL_NOTE}</p>
         </div>
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-foreground mb-1 block">Color</label>
-            <Select value={color} onValueChange={(v) => setColor(v as any)}>
+            <Select value={color} onValueChange={(v) => setColor(v as "natural" | "negro")}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar color" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="blanco">Blanco</SelectItem>
+                <SelectItem value="natural">Natural</SelectItem>
                 <SelectItem value="negro">Negro</SelectItem>
               </SelectContent>
             </Select>
@@ -223,7 +228,7 @@ function CardTiroAlto() {
               </SelectContent>
             </Select>
             <p className="mt-2 text-xs text-muted-foreground">
-              Si estás entre dos talles, elegí el más grande.
+              Moldería propia, real e inclusiva. Puedes elegir tu mejor talle con nuestra guía.
             </p>
           </div>
         </div>
@@ -232,7 +237,7 @@ function CardTiroAlto() {
         <Button
           className="w-full"
           disabled={!canBuy}
-          onClick={() => handleBuy({ productId: "tiro-alto", color: color as "blanco" | "negro", talle: talle as Talle })}
+          onClick={() => handleBuy({ productId: "tiro-alto", color: color as "natural" | "negro", talle: talle as Talle })}
         >
           Comprar
         </Button>
@@ -243,7 +248,7 @@ function CardTiroAlto() {
 
 function CardPack() {
   const [tiro, setTiro] = useState<"alto" | "bajo" | "">("")
-  const [color, setColor] = useState<"blanco" | "negro" | "combinado" | "">("")
+  const [color, setColor] = useState<"natural" | "negro" | "">("")
   const [talle, setTalle] = useState<Talle | "">("")
 
   const image = useMemo(() => {
@@ -263,14 +268,14 @@ function CardPack() {
       </CardHeader>
       <CardContent className="p-6">
         <CardTitle className="text-xl mb-2 text-foreground">Pack x2 Lilith</CardTitle>
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4">
           <span className="text-2xl font-bold text-primary">${PRICE_PACK.toLocaleString("es-UY")}</span>
-          <Badge variant="secondary">Disponible</Badge>
+          <p className="text-sm text-muted-foreground">{MATERIAL_NOTE}</p>
         </div>
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-foreground mb-1 block">Tiro</label>
-            <Select value={tiro} onValueChange={(v) => setTiro(v as any)}>
+            <Select value={tiro} onValueChange={(v) => setTiro(v as "alto" | "bajo")}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar tiro" />
               </SelectTrigger>
@@ -282,14 +287,13 @@ function CardPack() {
           </div>
           <div>
             <label className="text-sm font-medium text-foreground mb-1 block">Color</label>
-            <Select value={color} onValueChange={(v) => setColor(v as any)}>
+            <Select value={color} onValueChange={(v) => setColor(v as "natural" | "negro")}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar color" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="blanco">Blanco</SelectItem>
+                <SelectItem value="natural">Natural</SelectItem>
                 <SelectItem value="negro">Negro</SelectItem>
-                <SelectItem value="combinado">Combinado</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -308,7 +312,7 @@ function CardPack() {
               </SelectContent>
             </Select>
             <p className="mt-2 text-xs text-muted-foreground">
-              Si estás entre dos talles, elegí el más grande.
+              Moldería propia, real e inclusiva. Puedes elegir tu mejor talle con nuestra guía.
             </p>
           </div>
         </div>
@@ -317,7 +321,9 @@ function CardPack() {
         <Button
           className="w-full"
           disabled={!canBuy}
-          onClick={() => handleBuy({ productId: "pack-x2", tiro: tiro as any, color: color as any, talle: talle as Talle })}
+          onClick={() =>
+            handleBuy({ productId: "pack-x2", tiro: tiro as "alto" | "bajo", color: color as "natural" | "negro", talle: talle as Talle })
+          }
         >
           Comprar
         </Button>
@@ -333,7 +339,8 @@ function FAQ() {
           <p className="font-medium text-foreground">¿Cómo comprar?</p>
           <p className="text-muted-foreground">
             Elegí modelo, color y talle. Al hacer clic en Comprar se abre Mercado Pago. Finalizado el pago, coordiná el
-            envío personalizado al +598 99 256 208.
+            envío personalizado al {" "}
+            <span className="whitespace-nowrap">{PHONE_NUMBER}</span>.
           </p>
         </div>
         <div>
@@ -349,7 +356,7 @@ function FAQ() {
         <div>
           <p className="font-medium text-foreground">¿Cuánto tarda mi pedido?</p>
           <p className="text-muted-foreground">
-            Confección artesanal y nacional. Se reciben pedidos hasta el día 20 y se entregan a comienzos del mes
+            Confección artesanal y nacional. Pedidos hasta el 20 de cada mes y la entrega es hasta el 20 del mes
             siguiente.
           </p>
         </div>
