@@ -3,12 +3,14 @@
 import type React from "react"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, Instagram, MessageCircle } from "lucide-react"
+import { toast } from "@/hooks/use-toast"
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -16,17 +18,46 @@ export function Contact() {
     email: "",
     message: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Send via mailto link
-    const to = "bienvenida.lilith@gmail.com"
-    const subject = encodeURIComponent("Consulta desde la web")
-    const body = encodeURIComponent(
-      `Nombre: ${formData.name}\nEmail: ${formData.email}\n\nMensaje:\n${formData.message}`
-    )
-    if (typeof window !== "undefined") {
-      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`
+    if (isSubmitting) return
+
+    try {
+      setIsSubmitting(true)
+      // FormSubmit reenvía el contenido del formulario al correo configurado
+      const response = await fetch("https://formsubmit.co/ajax/bienvenida.lilith@gmail.com", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: formData.name,
+          correo: formData.email,
+          mensaje: formData.message,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("No pudimos enviar tu mensaje. Intenta nuevamente más tarde.")
+      }
+
+      toast({
+        title: "¡Mensaje enviado!",
+        description: "Gracias por escribirnos. Te responderemos a la brevedad.",
+      })
+      setFormData({ name: "", email: "", message: "" })
+    } catch (error) {
+      toast({
+        title: "No se pudo enviar",
+        description:
+          error instanceof Error ? error.message : "Ocurrió un error inesperado. Por favor, intenta nuevamente.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -90,7 +121,7 @@ export function Contact() {
                     className="mt-1"
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
                   Enviar Mensaje
                 </Button>
               </form>
@@ -135,6 +166,19 @@ export function Contact() {
                     </a>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+            <Card className="border-accent/20 overflow-hidden">
+              <CardContent className="p-0">
+                <Image
+                  src="/images/certificados.png"
+                  alt="Certificados de calidad Lilith"
+                  width={769}
+                  height={226}
+                  className="w-full h-auto"
+                  sizes="(min-width: 1024px) 24rem, 100vw"
+                  priority
+                />
               </CardContent>
             </Card>
           </div>
