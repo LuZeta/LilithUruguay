@@ -13,7 +13,14 @@ type HighlightSlide = {
   imageUrl: string
   alt: string
   title: string
-  text: string
+  text?: string
+  cta?: {
+    label: string
+    href: string
+    target?: string
+    rel?: string
+    download?: boolean | string
+  }
 }
 
 type LilithHeroProps = {
@@ -195,9 +202,22 @@ function LilithSplitHero({ slides, logoSrc }: LilithHeroProps) {
                       <h2 className="font-heading text-xl font-semibold leading-tight tracking-tight text-[#111] sm:text-2xl lg:text-[1.75rem]">
                         {activeSlide.title}
                       </h2>
-                      <p className="text-base leading-relaxed text-[#111]/70 sm:text-lg">
-                        {activeSlide.text}
-                      </p>
+                      {activeSlide.text ? (
+                        <p className="text-base leading-relaxed text-[#111]/70 sm:text-lg">
+                          {activeSlide.text}
+                        </p>
+                      ) : null}
+                      {activeSlide.cta ? (
+                        <Link
+                          href={activeSlide.cta.href}
+                          target={activeSlide.cta.target}
+                          rel={activeSlide.cta.rel}
+                          download={activeSlide.cta.download}
+                          className="inline-flex w-max items-center justify-center rounded-full bg-[#111] px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-[#111]/30 transition hover:bg-[#111]/90"
+                        >
+                          {activeSlide.cta.label}
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                 </motion.div>
@@ -252,11 +272,35 @@ function LilithSplitHero({ slides, logoSrc }: LilithHeroProps) {
 
 const heroSlides: HighlightSlide[] = [
   {
+    id: "slide-store",
+    imageUrl: publicPath("/images/Tienda.png"),
+    alt: "Bolsas de productos Lilith colgadas en exhibición",
+    title: "Descubrí tu Lilith",
+    cta: {
+      label: "Entrá a la tienda",
+      href: "#store",
+    },
+  },
+  {
+    id: "slide-ebook",
+    imageUrl: publicPath("/images/Saludintima.png"),
+    alt: "Portada del eBook Salud Íntima Lilith",
+    title: "Tu bienestar empieza con información",
+    text: "Descargá el eBook y descubrí cómo cuidarte mejor.",
+    cta: {
+      label: "Descargar eBook",
+      href: publicPath("/ebooksaludintima.pdf"),
+      target: "_blank",
+      rel: "noopener noreferrer",
+      download: true,
+    },
+  },
+  {
     id: "slide-1",
-    imageUrl: publicPath("/images/slide1.png"),
-    alt: "Lilith bombacha ecológica",
+    imageUrl: publicPath("/images/protectores.png"),
+    alt: "Bombachas reutilizables Lilith junto a protectores descartables",
     title: "Decile adiós a las compresas desechables",
-    text: "elige una alternativa reutilizable y amigable con tu cuerpo y el planeta",
+    text: "8kg de desechos equivalen a 5 Lilith, elige una alternativa reutilizable y amigable con tu cuerpo y el planeta.",
   },
   {
     id: "slide-2",
@@ -264,20 +308,6 @@ const heroSlides: HighlightSlide[] = [
     alt: "Bombacha y paño absorbente",
     title: "Lo natural no es tirar",
     text: "productos sostenibles que respetan tu salud y reducen resíduos",
-  },
-  {
-    id: "slide-3",
-    imageUrl: publicPath("/images/slide3.png"),
-    alt: "Detalle de la tela Lilith",
-    title: "Bienestar que cuida tu economía",
-    text: "ahorra cada mes sin renunciar a tu comodidad y seguridad",
-  },
-  {
-    id: "slide-4",
-    imageUrl: publicPath("/images/slide4.png"),
-    alt: "Textura suave de tela",
-    title: "Segura y fresca todos los días",
-    text: "protección confiable que te mantiene cómoda y libre de preocupaciones",
   },
   {
     id: "slide-5",
