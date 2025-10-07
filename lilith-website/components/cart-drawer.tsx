@@ -5,9 +5,15 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
 import { useCart } from "@/components/cart-context"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
+
+const WHATSAPP_NUMBER = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+598 99 256 208").trim()
+
+function formatWhatsappNumber(raw: string) {
+  return raw.replace(/[^0-9]/g, "")
+}
 
 export function CartDrawer() {
   const { items, count, subtotal, updateQuantity, removeItem, keyFor, clear } = useCart()
@@ -15,34 +21,49 @@ export function CartDrawer() {
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
 
+  const whatsappNumber = useMemo(() => formatWhatsappNumber(WHATSAPP_NUMBER), [])
+
   const handleInc = (k: string, q: number) => updateQuantity(k, q + 1)
   const handleDec = (k: string, q: number) => updateQuantity(k, q - 1)
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
+    if (!items.length) {
+      toast({ title: "Tu carrito está vacío" })
+      return
+    }
+
+    setLoading(true)
     try {
-      setLoading(true)
-      const payload = {
-        items: items.map((it) => ({
-          title: `${it.name} (${it.selectedSize} · ${it.selectedColor})`,
-          unit_price: it.price,
-          quantity: it.quantity,
-          currency_id: "ARS",
-        })),
-        payer: email ? { email } : undefined,
+      const summary = items
+        .map(
+          (it) =>
+            `• ${it.quantity}× ${it.name} (${it.selectedSize} · ${it.selectedColor}) - $${(
+              it.price * it.quantity
+            ).toLocaleString("es-UY")}`
+        )
+        .join("\n")
+
+      const totalLine = `Total estimado: $${subtotal.toLocaleString("es-UY")}`
+      const emailLine = email ? `\nEmail: ${email}` : ""
+      const message = `Hola Lilith! Quiero finalizar mi compra:\n\n${summary}\n${totalLine}${emailLine}`
+
+      if (!whatsappNumber) {
+        throw new Error("No se configuró un número de contacto")
       }
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+
+      const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+      window.open(url, "_blank", "noopener")
+      toast({
+        title: "¡Listo!",
+        description: "Abrimos WhatsApp para coordinar tu compra.",
       })
-      const data = await res.json()
-      if (!res.ok || !data?.url) {
-        throw new Error(data?.error || "No se pudo crear la preferencia")
-      }
+      clear()
       setOpen(false)
-      window.location.href = data.url
-    } catch (e: any) {
-      toast({ title: "Error al iniciar pago", description: e?.message || String(e) })
+    } catch (error: any) {
+      toast({
+        title: "No pudimos iniciar el contacto",
+        description: error?.message || String(error),
+      })
     } finally {
       setLoading(false)
     }
