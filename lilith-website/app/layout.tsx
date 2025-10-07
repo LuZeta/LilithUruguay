@@ -1,24 +1,26 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Marcellus, Poppins } from "next/font/google"
+import localFont from "next/font/local"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
 import { CartProvider } from "@/components/cart-context"
 import { Toaster } from "@/components/ui/toaster"
 
-const marcellus = Marcellus({
-  subsets: ["latin"],
+const marcellus = localFont({
+  src: [{ path: "../public/fonts/Marcellus-Regular.woff2", weight: "400", style: "normal" }],
   display: "swap",
   variable: "--font-marcellus",
-  weight: "400",
 })
 
-const poppins = Poppins({
-  subsets: ["latin"],
+const poppins = localFont({
+  src: [
+    { path: "../public/fonts/Poppins-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/Poppins-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../public/fonts/Poppins-SemiBold.woff2", weight: "600", style: "normal" },
+  ],
   display: "swap",
   variable: "--font-poppins",
-  weight: ["400", "500", "600"],
 })
 
 export const metadata: Metadata = {
