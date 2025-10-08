@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState } from "react"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, Instagram, MessageCircle } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -170,14 +171,13 @@ export function Contact() {
             </Card>
             <Card className="border-accent/20 overflow-hidden">
               <CardContent className="p-0">
-                <Image
-                  src="/images/certificados.png"
+                <img
+                  src={`${basePath}/images/certificados.png`}
                   alt="Certificados de calidad Lilith"
                   width={769}
                   height={226}
                   className="w-full h-auto"
-                  sizes="(min-width: 1024px) 24rem, 100vw"
-                  priority
+                  loading="lazy"
                 />
               </CardContent>
             </Card>

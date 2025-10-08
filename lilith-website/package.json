@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "npx next build",
+    "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "export": "npx next build && rm -rf ../docs && mv out ../docs && touch ../docs/.nojekyll",
-    "pages": "rm -rf ../docs && npx next build && mv out ../docs && touch ../docs/.nojekyll"
+    "export": "next build && rm -rf ../docs && mv out ../docs && touch ../docs/.nojekyll",
+    "pages": "rm -rf ../docs && next build && mv out ../docs && touch ../docs/.nojekyll"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
