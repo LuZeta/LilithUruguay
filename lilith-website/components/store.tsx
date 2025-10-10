@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "@/hooks/use-toast"
+import { useCart } from "@/components/cart-context"
+import { PRICE_PACK, PRICE_UNIT, PRODUCTS } from "@/lib/products"
 
 type Talle =
   | "38"
@@ -22,29 +24,8 @@ type Talle =
 
 const TALLES: Talle[] = ["38", "40", "42", "44", "46", "48", "50", "52", "54", "56"]
 
-type BuyPayload = {
-  productId: "clasica" | "tiro-alto" | "pack-x2"
-  color?: "natural" | "negro"
-  tiro?: "alto" | "bajo"
-  talle: Talle
-}
-
-const PRICE_UNIT = 2140
-const PRICE_PACK = 4280
 const PHONE_NUMBER = "+598 99 256 208"
-const PHONE_NUMBER_NBSP = "+598\u00a099\u00a0256\u00a0208"
 const MATERIAL_NOTE = "Algodón orgánico, cáñamo y bambú. Hasta 300 lavados."
-
-// TODO: Integrar redirección a Mercado Pago según producto/variante
-function handleBuy(payload: BuyPayload) {
-  // Placeholder: acá integrar URL de MP por variante
-  // Por ahora, mostramos confirmación y pasos de envío
-  toast({
-    title: "¡Gracias! Redirigiremos a Mercado Pago",
-    description: `Finalizado el pago, coordiná el envío personalizado al ${PHONE_NUMBER_NBSP}.`,
-  })
-  // console.log("handleBuy", payload)
-}
 
 export function Store() {
   return (
@@ -107,6 +88,7 @@ export function Store() {
 function CardClasica() {
   const [color, setColor] = useState<"natural" | "negro" | "">("")
   const [talle, setTalle] = useState<Talle | "">("")
+  const { addItem } = useCart()
 
   const image = useMemo(() => {
     if (color === "natural") return publicPath("/images/tienda/TIROBAJOBLANCA.png")
@@ -115,6 +97,26 @@ function CardClasica() {
   }, [color])
 
   const canBuy = Boolean(color && talle)
+  const handleAddToCart = () => {
+    if (!canBuy) return
+
+    const selectedColor = color as "natural" | "negro"
+    const selectedSize = talle as Talle
+
+    addItem({
+      id: PRODUCTS.clasica.id,
+      name: PRODUCTS.clasica.name,
+      price: PRICE_UNIT,
+      image,
+      selectedColor,
+      selectedSize,
+    })
+
+    toast({
+      title: "Producto agregado",
+      description: `${PRODUCTS.clasica.name} · Color ${selectedColor} · Talle ${selectedSize}`,
+    })
+  }
 
   return (
     <Card className="group hover:shadow-lg transition-shadow border-accent/20">
@@ -166,9 +168,9 @@ function CardClasica() {
         <Button
           className="w-full"
           disabled={!canBuy}
-          onClick={() => handleBuy({ productId: "clasica", color: color as "natural" | "negro", talle: talle as Talle })}
+          onClick={handleAddToCart}
         >
-          Comprar
+          Agregar al carrito
         </Button>
       </CardFooter>
     </Card>
@@ -178,6 +180,7 @@ function CardClasica() {
 function CardTiroAlto() {
   const [color, setColor] = useState<"natural" | "negro" | "">("")
   const [talle, setTalle] = useState<Talle | "">("")
+  const { addItem } = useCart()
 
   const image = useMemo(() => {
     if (color === "natural") return publicPath("/images/tienda/TIROALTOBLANCA.png")
@@ -186,6 +189,26 @@ function CardTiroAlto() {
   }, [color])
 
   const canBuy = Boolean(color && talle)
+  const handleAddToCart = () => {
+    if (!canBuy) return
+
+    const selectedColor = color as "natural" | "negro"
+    const selectedSize = talle as Talle
+
+    addItem({
+      id: PRODUCTS.tiroAlto.id,
+      name: PRODUCTS.tiroAlto.name,
+      price: PRICE_UNIT,
+      image,
+      selectedColor,
+      selectedSize,
+    })
+
+    toast({
+      title: "Producto agregado",
+      description: `${PRODUCTS.tiroAlto.name} · Color ${selectedColor} · Talle ${selectedSize}`,
+    })
+  }
 
   return (
     <Card className="group hover:shadow-lg transition-shadow border-accent/20">
@@ -237,9 +260,9 @@ function CardTiroAlto() {
         <Button
           className="w-full"
           disabled={!canBuy}
-          onClick={() => handleBuy({ productId: "tiro-alto", color: color as "natural" | "negro", talle: talle as Talle })}
+          onClick={handleAddToCart}
         >
-          Comprar
+          Agregar al carrito
         </Button>
       </CardFooter>
     </Card>
@@ -250,6 +273,7 @@ function CardPack() {
   const [tiro, setTiro] = useState<"alto" | "bajo" | "">("")
   const [color, setColor] = useState<"natural" | "negro" | "">("")
   const [talle, setTalle] = useState<Talle | "">("")
+  const { addItem } = useCart()
 
   const image = useMemo(() => {
     if (tiro === "bajo") return publicPath("/images/tienda/PACKTIROBAJO.png")
@@ -258,6 +282,29 @@ function CardPack() {
   }, [tiro])
 
   const canBuy = Boolean(tiro && color && talle)
+  const handleAddToCart = () => {
+    if (!canBuy) return
+
+    const selectedRise = tiro as "alto" | "bajo"
+    const selectedColor = color as "natural" | "negro"
+    const selectedSize = talle as Talle
+
+    addItem({
+      id: PRODUCTS.pack.id,
+      name: PRODUCTS.pack.name,
+      price: PRICE_PACK,
+      image,
+      selectedColor,
+      selectedSize,
+      selectedRise,
+    })
+
+    const riseLabel = selectedRise === "alto" ? "Tiro alto" : "Tiro bajo"
+    toast({
+      title: "Producto agregado",
+      description: `${PRODUCTS.pack.name} · ${riseLabel} · Color ${selectedColor} · Talle ${selectedSize}`,
+    })
+  }
 
   return (
     <Card className="group hover:shadow-lg transition-shadow border-accent/20">
@@ -321,11 +368,9 @@ function CardPack() {
         <Button
           className="w-full"
           disabled={!canBuy}
-          onClick={() =>
-            handleBuy({ productId: "pack-x2", tiro: tiro as "alto" | "bajo", color: color as "natural" | "negro", talle: talle as Talle })
-          }
+          onClick={handleAddToCart}
         >
-          Comprar
+          Agregar al carrito
         </Button>
       </CardFooter>
     </Card>

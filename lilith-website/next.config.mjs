@@ -1,8 +1,10 @@
-/** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production'
-const repo = 'LilithUruguay'
+const isProd = process.env.NODE_ENV === "production"
+const isStatic = process.env.STATIC_EXPORT === "true"
+const repo = "LilithUruguay"
 
+/** @type {import("next").NextConfig} */
 const nextConfig = {
+  ...(isStatic ? { output: "export" } : {}),
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -12,16 +14,13 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Export estático para GitHub Pages
-  output: 'export',
-  // Asegura rutas /path/index.html compatibles con Pages
-  trailingSlash: true,
-  // Servir bajo el subpath del repo en producción
-  basePath: isProd ? `/${repo}` : undefined,
-  assetPrefix: isProd ? `/${repo}/` : undefined,
+  trailingSlash: isStatic ? true : undefined,
+  basePath: isStatic && isProd ? `/${repo}` : undefined,
+  assetPrefix: isStatic && isProd ? `/${repo}/` : undefined,
   env: {
-    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repo}` : '',
+    NEXT_PUBLIC_BASE_PATH: isStatic && isProd ? `/${repo}` : "",
   },
+  reactStrictMode: true,
 }
 
 export default nextConfig
