@@ -1,10 +1,11 @@
-const isProd = process.env.NODE_ENV === "production"
-const isStatic = process.env.STATIC_EXPORT === "true"
+const isStaticExport = process.env.STATIC_EXPORT === "true"
+const isVercel = Boolean(process.env.VERCEL)
 const repo = "LilithUruguay"
+const staticBasePath = isStaticExport && !isVercel ? `/${repo}` : ""
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  ...(isStatic ? { output: "export" } : {}),
+  ...(isStaticExport ? { output: "export" } : {}),
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -14,11 +15,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  trailingSlash: isStatic ? true : undefined,
-  basePath: isStatic && isProd ? `/${repo}` : undefined,
-  assetPrefix: isStatic && isProd ? `/${repo}/` : undefined,
+  trailingSlash: isStaticExport ? true : undefined,
+  basePath: staticBasePath || undefined,
+  assetPrefix: staticBasePath ? `${staticBasePath}/` : undefined,
   env: {
-    NEXT_PUBLIC_BASE_PATH: isStatic && isProd ? `/${repo}` : "",
+    NEXT_PUBLIC_BASE_PATH: staticBasePath,
   },
   reactStrictMode: true,
 }

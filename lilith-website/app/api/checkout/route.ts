@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server"
-import { MercadoPagoConfig, Preference } from "mercadopago"
 import { getProductById } from "@/lib/products"
 
 const MERCADO_PAGO_ACCESS_TOKEN =
@@ -28,6 +27,22 @@ type PreferenceItem = {
   unit_price: number
   description?: string
   currency_id: "UYU"
+}
+
+type PreferencePayload = {
+  items: PreferenceItem[]
+  payer?: { email: string }
+  back_urls: {
+    success: string
+    failure: string
+    pending: string
+  }
+  metadata: {
+    contact_email: string
+    cart_email: string | null
+  }
+  notification_url?: string | null
+  auto_return?: "approved"
 }
 
 export async function POST(req: Request) {
@@ -112,7 +127,7 @@ export async function POST(req: Request) {
     )
   }
 
-  const preferencePayload = {
+  const preferencePayload: PreferencePayload = {
     items,
     payer: payload.email ? { email: payload.email.trim() } : undefined,
     back_urls: {
@@ -132,40 +147,78 @@ export async function POST(req: Request) {
   }
 
   try {
-    const preferenceClient = new Preference(
-      new MercadoPagoConfig({ accessToken: MERCADO_PAGO_ACCESS_TOKEN })
-    )
-
-    const preferenceResponse = await preferenceClient.create({
-      body: preferencePayload,
+    const response = await fetch("https://api.mercadopago.com/checkout/preferences", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${MERCADO_PAGO_ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify(preferencePayload),
     })
 
-    const redirectUrl = preferenceResponse.init_point || preferenceResponse.sandbox_init_point
+    let responseBody: any = null
+    try {
+      responseBody = await response.json()
+    } catch {
+      responseBody = null
+    }
+
+    if (!response.ok) {
+      console.error(
+        "[MercadoPago] Error HTTP creando preferencia",
+        response.status,
+        responseBody
+      )
+
+      const cause =
+        Array.isArray(responseBody?.cause)
+          ? responseBody.cause
+              .map((entry: any) => entry?.description || entry?.code || "")
+              .filter(Boolean)
+              .join(" | ")
+          : responseBody?.error || null
+
+      const message =
+        responseBody?.message ||
+        responseBody?.error ||
+        "No se pudo crear la preferencia en Mercado Pago"
+
+      return NextResponse.json(
+        { error: message, cause },
+        { status: response.status || 500 }
+      )
+    }
+
+    const redirectUrl = responseBody?.init_point || responseBody?.sandbox_init_point
     if (!redirectUrl) {
       return NextResponse.json({ error: "No se recibió la URL de pago" }, { status: 500 })
     }
 
     return NextResponse.json({
       init_point: redirectUrl,
-      preference_id: preferenceResponse.id,
+      preference_id: responseBody?.id,
     })
   } catch (error: any) {
-    const sdkError = error?.cause ?? error
     const causeMessage =
-      typeof sdkError?.message === "string"
-        ? sdkError.message
-        : typeof sdkError?.description === "string"
-          ? sdkError.description
+      typeof error?.message === "string"
+        ? error.message
+        : typeof error?.description === "string"
+          ? error.description
           : undefined
 
-    console.error("[MercadoPago] Excepción creando preferencia", sdkError)
+    console.error("[MercadoPago] Excepción creando preferencia", error)
 
     return NextResponse.json(
       {
-        error: causeMessage || sdkError?.message || "No se pudo crear la preferencia en Mercado Pago",
-        cause: Array.isArray(sdkError?.cause)
-          ? sdkError.cause.map((entry: any) => entry?.description || entry?.code || "").filter(Boolean).join(" | ")
-          : sdkError?.error || null,
+        error:
+          causeMessage || "No se pudo crear la preferencia en Mercado Pago",
+        cause:
+          Array.isArray(error?.cause)
+            ? error.cause
+                .map((entry: any) => entry?.description || entry?.code || "")
+                .filter(Boolean)
+                .join(" | ")
+            : error?.error || null,
       },
       { status: 500 }
     )
