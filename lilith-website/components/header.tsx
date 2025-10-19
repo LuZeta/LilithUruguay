@@ -22,7 +22,7 @@ export function Header() {
   const navigation = [
     { name: "Tienda", href: "#store" },
     { name: "Preguntas frecuentes", href: "#preguntas-frecuentes" },
-    { name: "Nosotras", href: "#nosotros" },
+    { name: "Nosotras", href: "#nosotras" },
     { name: "Contacto", href: "#contact" },
   ]
 
