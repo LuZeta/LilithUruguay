@@ -6,8 +6,8 @@ export type ProductDefinition = {
   price: number
 }
 
-export const PRICE_UNIT = 2140
-export const PRICE_PACK = 4280
+export const PRICE_UNIT = 2790
+export const PRICE_PACK = 4490
 
 export const PRODUCTS: Record<ProductKey, ProductDefinition> = {
   clasica: { id: 1, name: "Lilith Clásica", price: PRICE_UNIT },
